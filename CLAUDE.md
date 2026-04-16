@@ -11,7 +11,7 @@ This repository contains the SCC public website, hosted on GitHub Pages with a c
 ```
 scc/
 ├── CLAUDE.md
-└── scc_website/          # GitHub Pages root (deployed from this directory)
+└── docs/                  # GitHub Pages root (deployed from this directory)
     ├── index.html         # Main landing page
     ├── papers/            # Paper download page and PDF assets
     │   ├── index.html     # Paper listing & download page
@@ -37,21 +37,21 @@ scc/
 ## Hosting
 
 - **Platform**: GitHub Pages
-- **Source**: `scc_website/` directory on `main` branch
-- **Custom domain**: configured via `CNAME` file in `scc_website/`
+- **Source**: `docs/` directory on `main` branch
+- **Custom domain**: configured via `CNAME` file in `docs/`
 - **Deploy**: push to `main` → GitHub Actions automatically deploys
 
 ## Adding a New Paper
 
-1. Place the PDF in `scc_website/papers/` as `CRIS-{vol}-{no}.pdf`
-2. Add entry to `scc_website/papers/index.html` paper list
-3. If it's among the latest 3, update `scc_website/index.html` papers section
+1. Place the PDF in `docs/papers/` as `CRIS-{vol}-{no}.pdf`
+2. Add entry to `docs/papers/index.html` paper list
+3. If it's among the latest 3, update `docs/index.html` papers section
 4. Update the paper links to point to the PDF: `href="papers/CRIS-{vol}-{no}.pdf"`
 5. Commit and push to `main`
 
 ## Common Tasks
 
-- **Edit landing page**: `scc_website/index.html`
-- **Edit paper downloads page**: `scc_website/papers/index.html`
-- **Add custom domain**: edit `scc_website/CNAME`
+- **Edit landing page**: `docs/index.html`
+- **Edit paper downloads page**: `docs/papers/index.html`
+- **Add custom domain**: edit `docs/CNAME`
 - **Style changes**: all CSS is inline in each HTML file's `<style>` block
