@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Research Notes — Strategy Critique Collective</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0e0e0c;
+    --bg-2: #161614;
+    --bg-3: #1e1e1b;
+    --cream: #f0ece0;
+    --cream-muted: #a09b8c;
+    --gold: #c8a96e;
+    --gold-muted: #7a6540;
+    --border: rgba(200, 169, 110, 0.15);
+    --border-strong: rgba(200, 169, 110, 0.35);
+    --serif: 'Cormorant Garamond', Georgia, serif;
+    --sans: 'IBM Plex Sans', system-ui, sans-serif;
+    --mono: 'IBM Plex Mono', monospace;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--cream);
+    font-family: var(--sans);
+    font-weight: 300;
+    line-height: 1.7;
+    font-size: 16px;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 4rem;
+    background: rgba(14, 14, 12, 0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 0.5px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: var(--gold);
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    color: var(--cream-muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--cream); }
+  .nav-links a.active { color: var(--cream); }
+
+  /* PAGE HEADER */
+  .page-header {
+    padding: 10rem 4rem 4rem;
+    border-bottom: 0.5px solid var(--border);
+  }
+
+  .page-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+  }
+
+  .page-title {
+    font-family: var(--serif);
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    font-weight: 300;
+    line-height: 1.1;
+    color: var(--cream);
+    margin-bottom: 1.5rem;
+  }
+
+  .page-title em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .page-desc {
+    font-size: 15px;
+    color: var(--cream-muted);
+    max-width: 560px;
+    line-height: 1.8;
+  }
+
+  /* FILTER BAR */
+  .filter-bar {
+    padding: 1.5rem 4rem;
+    border-bottom: 0.5px solid var(--border);
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .filter-btn {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--cream-muted);
+    background: none;
+    border: 0.5px solid var(--border);
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .filter-btn:hover,
+  .filter-btn.active {
+    color: var(--cream);
+    border-color: var(--gold);
+    background: rgba(200, 169, 110, 0.08);
+  }
+
+  /* PAPERS LIST */
+  .papers-section {
+    padding: 0 4rem;
+  }
+
+  .papers-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .paper-item {
+    display: grid;
+    grid-template-columns: 6rem 1fr auto auto;
+    gap: 2rem;
+    padding: 2.5rem 0;
+    border-bottom: 0.5px solid var(--border);
+    align-items: center;
+    text-decoration: none;
+  }
+
+  .paper-vol {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--gold-muted);
+    letter-spacing: 0.05em;
+  }
+
+  .paper-info {
+    min-width: 0;
+  }
+
+  .paper-title {
+    font-family: var(--serif);
+    font-size: 1.3rem;
+    font-weight: 400;
+    color: var(--cream);
+    line-height: 1.4;
+    margin-bottom: 0.5rem;
+  }
+
+  .paper-meta {
+    font-size: 12px;
+    color: var(--cream-muted);
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .paper-abstract {
+    font-size: 13px;
+    color: var(--cream-muted);
+    line-height: 1.7;
+    margin-top: 0.75rem;
+    max-width: 640px;
+  }
+
+  .paper-tags {
+    display: flex;
+    gap: 0.5rem;
+    align-self: start;
+    margin-top: 0.3rem;
+  }
+
+  .paper-tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--gold-muted);
+    border: 0.5px solid var(--gold-muted);
+    padding: 0.2rem 0.6rem;
+    white-space: nowrap;
+  }
+
+  .paper-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-self: start;
+    margin-top: 0.3rem;
+  }
+
+  .download-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--cream);
+    text-decoration: none;
+    border: 0.5px solid var(--border-strong);
+    padding: 0.6rem 1.2rem;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .download-btn:hover {
+    background: rgba(200, 169, 110, 0.08);
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+
+  .download-btn svg {
+    width: 14px;
+    height: 14px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  /* FOOTER */
+  footer {
+    padding: 3rem 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 0.5px solid var(--border);
+    margin-top: 4rem;
+  }
+
+  .footer-logo {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: var(--gold-muted);
+    text-transform: uppercase;
+  }
+
+  .footer-copy {
+    font-size: 12px;
+    color: var(--cream-muted);
+    opacity: 0.5;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    .page-header { padding: 7rem 1.5rem 3rem; }
+    .filter-bar { padding: 1.5rem; }
+    .papers-section { padding: 0 1.5rem; }
+    .paper-item {
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+    }
+    .paper-vol { order: -1; }
+    .paper-tags { order: 2; }
+    .paper-actions { order: 3; flex-direction: row; }
+    footer { padding: 2rem 1.5rem; flex-direction: column; gap: 0.75rem; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="../" class="nav-logo">SCC</a>
+  <ul class="nav-links">
+    <li><a href="../#about">About</a></li>
+    <li><a href="./" class="active">Research Notes</a></li>
+    <li><a href="../#submit">Submit</a></li>
+  </ul>
+</nav>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="page-label">Research Notes Archive</div>
+  <h1 class="page-title"><em>Critical Review of</em><br>Investment Strategies</h1>
+  <p class="page-desc">
+    All published notes and letters from the Strategy Critique Collective.
+    Each paper is freely available for download as PDF.
+  </p>
+</div>
+
+<!-- FILTER -->
+<div class="filter-bar">
+  <button class="filter-btn active" onclick="filterPapers('all')">All</button>
+  <button class="filter-btn" onclick="filterPapers('momentum')">Momentum</button>
+  <button class="filter-btn" onclick="filterPapers('factor')">Factor</button>
+  <button class="filter-btn" onclick="filterPapers('execution')">Execution</button>
+</div>
+
+<!-- PAPERS -->
+<div class="papers-section">
+  <div class="papers-list">
+
+    <div class="paper-item" data-category="momentum">
+      <div class="paper-vol">Vol. 1<br>No. 3</div>
+      <div class="paper-info">
+        <div class="paper-title">Momentum Crashes and the Illusion of Drawdown Control</div>
+        <div class="paper-meta">
+          <span>J. Kim, H. Park</span>
+          <span>·</span>
+          <span>November 2025</span>
+        </div>
+        <p class="paper-abstract">
+          We examine common drawdown-management techniques applied to cross-sectional
+          momentum strategies and show that their apparent effectiveness is largely an
+          artifact of in-sample calibration. Out-of-sample, these controls provide
+          negligible improvement in tail-risk outcomes.
+        </p>
+      </div>
+      <div class="paper-tags">
+        <span class="paper-tag">Momentum</span>
+      </div>
+      <div class="paper-actions">
+        <a href="CRIS-1-3.pdf" class="download-btn" download>
+          <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          PDF
+        </a>
+      </div>
+    </div>
+
+    <div class="paper-item" data-category="factor">
+      <div class="paper-vol">Vol. 1<br>No. 2</div>
+      <div class="paper-info">
+        <div class="paper-title">Capacity Constraints in Low-Volatility Strategies: A Practitioner's Note</div>
+        <div class="paper-meta">
+          <span>S. Lee</span>
+          <span>·</span>
+          <span>September 2025</span>
+        </div>
+        <p class="paper-abstract">
+          This note quantifies how capacity constraints in low-volatility equity
+          strategies degrade realized returns once AUM exceeds thresholds implied
+          by underlying liquidity — a phenomenon widely acknowledged but rarely
+          measured in the academic literature.
+        </p>
+      </div>
+      <div class="paper-tags">
+        <span class="paper-tag">Factor</span>
+      </div>
+      <div class="paper-actions">
+        <a href="CRIS-1-2.pdf" class="download-btn" download>
+          <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          PDF
+        </a>
+      </div>
+    </div>
+
+    <div class="paper-item" data-category="execution">
+      <div class="paper-vol">Vol. 1<br>No. 1</div>
+      <div class="paper-info">
+        <div class="paper-title">What Fama-French Factors Actually Require of Your Execution Desk</div>
+        <div class="paper-meta">
+          <span>H. Choi, Y. Jung</span>
+          <span>·</span>
+          <span>June 2025</span>
+        </div>
+        <p class="paper-abstract">
+          We decompose the implicit execution assumptions in standard Fama-French
+          factor construction and estimate the transaction cost burden that faithful
+          replication imposes — arguing that most reported factor premia are
+          substantially overstated for realistic portfolio sizes.
+        </p>
+      </div>
+      <div class="paper-tags">
+        <span class="paper-tag">Execution</span>
+      </div>
+      <div class="paper-actions">
+        <a href="CRIS-1-1.pdf" class="download-btn" download>
+          <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          PDF
+        </a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Strategy Critique Collective</div>
+  <div class="footer-copy">© 2025 SCC · Critical Review of Investment Strategies</div>
+</footer>
+
+<script>
+function filterPapers(category) {
+  const items = document.querySelectorAll('.paper-item');
+  const buttons = document.querySelectorAll('.filter-btn');
+
+  buttons.forEach(btn => btn.classList.remove('active'));
+  event.target.classList.add('active');
+
+  items.forEach(item => {
+    if (category === 'all' || item.dataset.category === category) {
+      item.style.display = '';
+    } else {
+      item.style.display = 'none';
+    }
+  });
+}
+</script>
+
+</body>
+</html>

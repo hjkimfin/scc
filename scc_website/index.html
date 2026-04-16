@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Strategy Critique Collective</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0e0e0c;
+    --bg-2: #161614;
+    --bg-3: #1e1e1b;
+    --cream: #f0ece0;
+    --cream-muted: #a09b8c;
+    --gold: #c8a96e;
+    --gold-muted: #7a6540;
+    --border: rgba(200, 169, 110, 0.15);
+    --border-strong: rgba(200, 169, 110, 0.35);
+    --serif: 'Cormorant Garamond', Georgia, serif;
+    --sans: 'IBM Plex Sans', system-ui, sans-serif;
+    --mono: 'IBM Plex Mono', monospace;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--cream);
+    font-family: var(--sans);
+    font-weight: 300;
+    line-height: 1.7;
+    font-size: 16px;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 4rem;
+    background: rgba(14, 14, 12, 0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 0.5px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: var(--gold);
+    text-transform: uppercase;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    color: var(--cream-muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--cream); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 8rem 4rem 6rem;
+    position: relative;
+    border-bottom: 0.5px solid var(--border);
+  }
+
+  .hero-rule {
+    position: absolute;
+    top: 50%;
+    left: 4rem; right: 4rem;
+    height: 0.5px;
+    background: var(--border);
+  }
+
+  .hero-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+  }
+
+  .hero-title {
+    font-family: var(--serif);
+    font-size: clamp(3.5rem, 7vw, 7rem);
+    font-weight: 300;
+    line-height: 1.05;
+    color: var(--cream);
+    max-width: 800px;
+    margin-bottom: 2rem;
+  }
+
+  .hero-title em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .hero-sub {
+    font-size: 15px;
+    color: var(--cream-muted);
+    max-width: 520px;
+    line-height: 1.8;
+    margin-bottom: 3rem;
+  }
+
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--cream);
+    text-decoration: none;
+    border: 0.5px solid var(--border-strong);
+    padding: 0.9rem 1.75rem;
+    transition: background 0.2s, border-color 0.2s;
+  }
+
+  .hero-cta:hover {
+    background: rgba(200, 169, 110, 0.08);
+    border-color: var(--gold);
+  }
+
+  .hero-cta-arrow { font-size: 16px; }
+
+  .hero-meta {
+    position: absolute;
+    bottom: 6rem; right: 4rem;
+    text-align: right;
+  }
+
+  .hero-meta-item {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--cream-muted);
+    letter-spacing: 0.1em;
+    line-height: 2;
+  }
+
+  /* SECTION BASE */
+  section {
+    padding: 7rem 4rem;
+    border-bottom: 0.5px solid var(--border);
+  }
+
+  .section-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 3rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 0.5px;
+    background: var(--border);
+    max-width: 120px;
+  }
+
+  /* ABOUT */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: start;
+  }
+
+  .about-title {
+    font-family: var(--serif);
+    font-size: clamp(2.2rem, 3.5vw, 3.2rem);
+    font-weight: 300;
+    line-height: 1.2;
+    color: var(--cream);
+    margin-bottom: 2rem;
+  }
+
+  .about-body {
+    font-size: 15px;
+    color: var(--cream-muted);
+    line-height: 1.9;
+  }
+
+  .about-body p + p { margin-top: 1.25rem; }
+
+  .about-pillars {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .pillar {
+    padding: 1.75rem 0;
+    border-bottom: 0.5px solid var(--border);
+    display: grid;
+    grid-template-columns: 2rem 1fr;
+    gap: 1.5rem;
+    align-items: start;
+  }
+
+  .pillar:first-child { border-top: 0.5px solid var(--border); }
+
+  .pillar-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--gold-muted);
+    padding-top: 3px;
+  }
+
+  .pillar-title {
+    font-family: var(--serif);
+    font-size: 1.15rem;
+    font-weight: 400;
+    color: var(--cream);
+    margin-bottom: 0.4rem;
+  }
+
+  .pillar-desc {
+    font-size: 13px;
+    color: var(--cream-muted);
+    line-height: 1.7;
+  }
+
+  /* PAPERS */
+  .papers-header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    margin-bottom: 3rem;
+    gap: 2rem;
+  }
+
+  .papers-title {
+    font-family: var(--serif);
+    font-size: clamp(1.8rem, 2.5vw, 2.5rem);
+    font-weight: 300;
+    color: var(--cream);
+  }
+
+  .papers-title em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .view-all {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--cream-muted);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: color 0.2s;
+  }
+
+  .view-all:hover { color: var(--gold); }
+
+  .papers-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .paper-item {
+    display: grid;
+    grid-template-columns: 5rem 1fr auto;
+    gap: 2rem;
+    padding: 2rem 0;
+    border-bottom: 0.5px solid var(--border);
+    align-items: start;
+    transition: background 0.2s;
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  .paper-item:first-child { border-top: 0.5px solid var(--border); }
+
+  .paper-item:hover .paper-title { color: var(--gold); }
+
+  .paper-vol {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--gold-muted);
+    letter-spacing: 0.05em;
+    padding-top: 4px;
+  }
+
+  .paper-title {
+    font-family: var(--serif);
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: var(--cream);
+    line-height: 1.4;
+    margin-bottom: 0.4rem;
+    transition: color 0.2s;
+  }
+
+  .paper-meta {
+    font-size: 12px;
+    color: var(--cream-muted);
+    display: flex;
+    gap: 1rem;
+  }
+
+  .paper-tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--gold-muted);
+    border: 0.5px solid var(--gold-muted);
+    padding: 0.2rem 0.6rem;
+    white-space: nowrap;
+    align-self: start;
+  }
+
+  .paper-arrow {
+    font-size: 18px;
+    color: var(--cream-muted);
+    align-self: center;
+    transition: transform 0.2s, color 0.2s;
+  }
+
+  .paper-item:hover .paper-arrow {
+    transform: translateX(4px);
+    color: var(--gold);
+  }
+
+  /* SUBMIT */
+  .submit-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: start;
+  }
+
+  .submit-title {
+    font-family: var(--serif);
+    font-size: clamp(2rem, 3vw, 2.8rem);
+    font-weight: 300;
+    line-height: 1.2;
+    color: var(--cream);
+    margin-bottom: 1.5rem;
+  }
+
+  .submit-body {
+    font-size: 15px;
+    color: var(--cream-muted);
+    line-height: 1.9;
+    margin-bottom: 2.5rem;
+  }
+
+  .submit-link {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--gold);
+    text-decoration: none;
+    letter-spacing: 0.05em;
+    border-bottom: 0.5px solid var(--gold-muted);
+    padding-bottom: 2px;
+    transition: border-color 0.2s;
+  }
+
+  .submit-link:hover { border-color: var(--gold); }
+
+  .guidelines-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .guideline {
+    padding: 1.25rem 0;
+    border-bottom: 0.5px solid var(--border);
+    display: grid;
+    grid-template-columns: 1.5rem 1fr;
+    gap: 1.25rem;
+    font-size: 14px;
+    color: var(--cream-muted);
+    line-height: 1.7;
+  }
+
+  .guideline:first-child { border-top: 0.5px solid var(--border); }
+
+  .guideline-dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--gold);
+    margin-top: 9px;
+  }
+
+  /* FOOTER */
+  footer {
+    padding: 3rem 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .footer-logo {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: var(--gold-muted);
+    text-transform: uppercase;
+  }
+
+  .footer-copy {
+    font-size: 12px;
+    color: var(--cream-muted);
+    opacity: 0.5;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    section, .hero { padding: 5rem 1.5rem; }
+    .about-grid, .submit-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .hero-meta { display: none; }
+    .paper-item { grid-template-columns: 3.5rem 1fr; }
+    .paper-arrow { display: none; }
+    footer { padding: 2rem 1.5rem; flex-direction: column; gap: 0.75rem; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">SCC</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#papers">Research Notes</a></li>
+    <li><a href="#submit">Submit</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-label">Strategy Critique Collective</div>
+  <h1 class="hero-title">What the models<br>don't <em>tell you.</em></h1>
+  <p class="hero-sub">
+    Critical notes on investment strategy. We examine momentum, factor investing,
+    and systematic approaches — not to celebrate them, but to scrutinize what
+    practitioners know and papers overlook.
+  </p>
+  <a href="#papers" class="hero-cta">
+    Read Research Notes
+    <span class="hero-cta-arrow">→</span>
+  </a>
+  <div class="hero-meta">
+    <div class="hero-meta-item">Critical Review of</div>
+    <div class="hero-meta-item">Investment Strategies</div>
+    <div class="hero-meta-item" style="margin-top: 0.5rem; color: var(--gold-muted);">Est. 2025</div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-label">About</div>
+  <div class="about-grid">
+    <div>
+      <h2 class="about-title">Practitioner insight.<br>Academic rigor.</h2>
+      <div class="about-body">
+        <p>
+          Strategy Critique Collective is an independent research group publishing
+          short-form notes and letters on systematic investment strategies —
+          focused not on what works in theory, but on what practitioners encounter
+          in execution.
+        </p>
+        <p>
+          Our contributors are quant practitioners and researchers who write
+          not to advocate strategies, but to examine them critically: where
+          the technical difficulties lie, what the hype misses, and what the
+          backtests quietly assume.
+        </p>
+        <p>
+          We publish under the series <em>Critical Review of Investment Strategies</em>.
+          Submissions undergo peer review by practitioners in the field.
+        </p>
+      </div>
+    </div>
+    <div class="about-pillars">
+      <div class="pillar">
+        <span class="pillar-num">01</span>
+        <div>
+          <div class="pillar-title">Technical critique</div>
+          <p class="pillar-desc">Methodological difficulties that papers acknowledge in footnotes but practitioners encounter in production.</p>
+        </div>
+      </div>
+      <div class="pillar">
+        <span class="pillar-num">02</span>
+        <div>
+          <div class="pillar-title">Hype examination</div>
+          <p class="pillar-desc">What current narratives around momentum, factor premia, and alternative data quietly elide.</p>
+        </div>
+      </div>
+      <div class="pillar">
+        <span class="pillar-num">03</span>
+        <div>
+          <div class="pillar-title">Practitioner-first</div>
+          <p class="pillar-desc">Written by those who run the strategies, not only those who study them from the outside.</p>
+        </div>
+      </div>
+      <div class="pillar">
+        <span class="pillar-num">04</span>
+        <div>
+          <div class="pillar-title">Short-form notes</div>
+          <p class="pillar-desc">Targeted, focused contributions — not full papers. Insight without the academic ceremony.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PAPERS -->
+<section id="papers">
+  <div class="section-label">Research Notes</div>
+  <div class="papers-header">
+    <h2 class="papers-title"><em>Critical Review of</em><br>Investment Strategies</h2>
+    <a href="papers/" class="view-all">All notes →</a>
+  </div>
+  <div class="papers-list">
+
+    <a class="paper-item" href="papers/CRIS-1-3.pdf" download>
+      <div class="paper-vol">Vol. 1 · No. 3</div>
+      <div>
+        <div class="paper-title">Momentum Crashes and the Illusion of Drawdown Control</div>
+        <div class="paper-meta">
+          <span>J. Kim, H. Park</span>
+          <span>·</span>
+          <span>Nov 2025</span>
+        </div>
+      </div>
+      <div class="paper-tag">Momentum</div>
+      <div class="paper-arrow">↓</div>
+    </a>
+
+    <a class="paper-item" href="papers/CRIS-1-2.pdf" download>
+      <div class="paper-vol">Vol. 1 · No. 2</div>
+      <div>
+        <div class="paper-title">Capacity Constraints in Low-Volatility Strategies: A Practitioner's Note</div>
+        <div class="paper-meta">
+          <span>S. Lee</span>
+          <span>·</span>
+          <span>Sep 2025</span>
+        </div>
+      </div>
+      <div class="paper-tag">Factor</div>
+      <div class="paper-arrow">↓</div>
+    </a>
+
+    <a class="paper-item" href="papers/CRIS-1-1.pdf" download>
+      <div class="paper-vol">Vol. 1 · No. 1</div>
+      <div>
+        <div class="paper-title">What Fama-French Factors Actually Require of Your Execution Desk</div>
+        <div class="paper-meta">
+          <span>H. Choi, Y. Jung</span>
+          <span>·</span>
+          <span>Jun 2025</span>
+        </div>
+      </div>
+      <div class="paper-tag">Execution</div>
+      <div class="paper-arrow">↓</div>
+    </a>
+
+  </div>
+</section>
+
+<!-- SUBMIT -->
+<section id="submit">
+  <div class="section-label">Submit</div>
+  <div class="submit-grid">
+    <div>
+      <h2 class="submit-title">Contribute a note</h2>
+      <p class="submit-body">
+        We welcome short research notes (1,500–5,000 words) and letters (under 1,500 words)
+        from practitioners and researchers. We do not publish advocacy — we publish critique.
+        All submissions undergo practitioner peer review.
+      </p>
+      <a href="mailto:submissions@strategycritique.org" class="submit-link">
+        submissions@strategycritique.org
+      </a>
+    </div>
+    <div class="guidelines-list">
+      <div class="guideline">
+        <div class="guideline-dot"></div>
+        <div>Submissions must engage a specific strategy, methodology, or empirical claim — not general commentary.</div>
+      </div>
+      <div class="guideline">
+        <div class="guideline-dot"></div>
+        <div>Authors need not disclose their firm or position, but should disclose relevant conflicts of interest.</div>
+      </div>
+      <div class="guideline">
+        <div class="guideline-dot"></div>
+        <div>We accept notes on any systematic or quantitative investment strategy. Factor premia, momentum, alternative risk premia, and ML-based approaches are current areas of focus.</div>
+      </div>
+      <div class="guideline">
+        <div class="guideline-dot"></div>
+        <div>Submissions may be in English. LaTeX or Word both accepted. Response within 3–4 weeks.</div>
+      </div>
+      <div class="guideline">
+        <div class="guideline-dot"></div>
+        <div>No submission fee at this time. Published notes are freely accessible for the inaugural volume.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Strategy Critique Collective</div>
+  <div class="footer-copy">© 2025 SCC · Critical Review of Investment Strategies</div>
+</footer>
+
+</body>
+</html>
