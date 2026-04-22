@@ -1,0 +1,90 @@
+\documentclass{scc}
+
+%% ---------- Essay metadata ----------
+\title{What gross momentum numbers quietly assume about your execution desk}
+\author{J.~Kim \and H.~Park}
+\essaynumber{04}
+\paperdate{December 2025}
+\shorttitle{Gross momentum and execution}
+\shortauthors{Kim \& Park}
+\keywords{momentum, transaction costs, implementation shortfall}
+
+\begin{document}
+\maketitle
+
+%% ---------- Summary (uses the standard `abstract` environment,
+%% restyled as a quiet lede paragraph) ----------
+\begin{abstract}
+Most published momentum results report returns gross of transaction costs, and the footnote noting this is usually honest. The issue is not the footnote; it is that the gap between the gross number and what is actually implementable is neither small nor stable. We walk through how that gap behaves in one institutional execution dataset, why static cost adjustments miss most of what is going on, and what a researcher who has never touched an execution desk should carry away from the exercise.
+\end{abstract}
+
+%% ---------- Body ----------
+\section{What the literature tends to assume}
+
+The momentum anomaly, first documented by \citet{jegadeesh1993}, remains one of the most studied phenomena in empirical asset pricing. Academic estimates of premia typically range from 6--12\% annually for long-short portfolios formed on 12-month past returns with a one-month skip, and the portfolios are usually rebalanced monthly at closing prices.
+
+That construction is easy to criticize on its own terms, and the criticism is not new: \citet{novy2012} and \citet{frazzini2014} both quantify substantial net-of-cost erosion. What we want to push on here is narrower. The standard construction makes three quiet assumptions about execution, and when you sit with what each of them actually implies, the shape of the ``net'' number changes in ways a flat haircut cannot capture.
+
+\subsection{Assumption one: the arrival price is available}
+The rebalance is almost always assumed to happen at a single reference price --- typically the closing print. A real execution desk does not trade a full decile-sized portfolio at close; it works the order across a window, and the price drifts away from arrival as the order pushes into the book.
+
+\subsection{Assumption two: turnover is cost-neutral}
+Long-short momentum portfolios turn over on the order of 200\% annually per leg. The cost of that turnover is usually modeled as a linear commission. Market impact, which is convex in trade size and grows with urgency, is left out or approximated away.
+
+\subsection{Assumption three: conditions are stationary}
+Both of the above are assumed to hold uniformly across time. In practice, the periods when momentum portfolios need to trade the most are exactly the periods when impact is worst --- crashes, reversals, regime shifts.
+
+\section{What implementation shortfall actually looks like}
+
+We decompose total implementation shortfall $S$ into three components:
+\begin{equation}
+  S = \underbrace{C_{\text{impact}}}_{\text{market impact}}
+    + \underbrace{C_{\text{delay}}}_{\text{timing delay}}
+    + \underbrace{C_{\text{opp}}}_{\text{opportunity cost}}
+\end{equation}
+where market impact $C_{\text{impact}}$ is the difference between the volume-weighted execution price and the arrival price; timing delay $C_{\text{delay}}$ captures drift between decision time and order submission; and opportunity cost $C_{\text{opp}}$ reflects unfilled portions of target orders.
+
+Table~\ref{tab:costs} summarizes the annualized cost decomposition across our sample period (2010--2024).
+
+\begin{table}[ht]
+  \centering
+  \caption{Annualized implementation shortfall decomposition for a standard cross-sectional momentum strategy, 2010--2024. Figures in basis points.}
+  \label{tab:costs}
+  \begin{tabular}{lrrr}
+    \toprule
+    Component & Mean & Median & Std.~Dev. \\
+    \midrule
+    Market impact     & 187 & 172 & 64 \\
+    Timing delay      &  43 &  38 & 21 \\
+    Opportunity cost  &  52 &  41 & 35 \\
+    \midrule
+    Total shortfall   & 282 & 251 & 89 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+The mean total shortfall of 282 basis points represents a substantial fraction of the gross premium, which averaged roughly 640 bps over the same period. Market impact alone accounts for 66\% of total costs, consistent with the high turnover and concentrated trading patterns inherent to monthly momentum rebalancing.\footnote{Turnover rates for decile-based momentum strategies typically exceed 200\% annually on each leg.}
+
+\section{Why the gap moves with the regime}
+
+Costs are not uniformly distributed across market states. During crash episodes --- periods identified following the methodology of \citet{daniel2016} --- total shortfall rises by approximately 40\%, driven almost entirely by elevated impact during forced liquidation of losing positions.
+
+This matters because it undermines a common shortcut in the literature: deducting a fixed basis-point haircut to convert a gross series to a ``net-of-costs'' one. The haircut is by definition averaged over regimes; the regimes in which momentum is most stressed are exactly the regimes in which the true haircut is largest. A static adjustment systematically understates drawdowns and overstates realized Sharpe ratios in the stressed tail.
+
+\section{What to take away}
+
+A few things, stated as plainly as we can:
+
+\begin{enumerate}
+  \item Gross momentum returns overstate implementable returns by roughly 44\% in our sample on average, and by more than 60\% during stress periods.
+  \item The dominant cost is market impact, not commission or delay. This is a different object than what is usually subtracted as a ``transaction cost'' in academic work.
+  \item Because the gap is state-dependent, a flat haircut is misleading exactly where the analysis matters most --- in the tails.
+\end{enumerate}
+
+None of this means the momentum premium is not real. It means the quantity being reported in most papers is not the quantity a reader probably has in mind, and the size of the discrepancy is neither trivial nor constant.
+
+%% ---------- References ----------
+\section{References}
+\bibliography{scc-sample}
+
+\end{document}

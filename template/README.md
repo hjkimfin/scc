@@ -1,81 +1,79 @@
-# CRIS LaTeX Template
+# SCC Essay Template
 
-LaTeX document class for **Critical Review of Investment Strategies** (CRIS), published by Strategy Critique Collective.
+LaTeX document class for short critical essays published by **Strategy Critique Collective** (SCC).
 
-## Quick Start
+The class is deliberately minimal. No journal banner, no volume/issue furniture, no JEL codes — just a title, an author, a date, a lede, and readable sections.
 
-1. Copy `cris.cls` into your working directory (or your local texmf tree).
-2. Start your document with `\documentclass{cris}`.
-3. See `cris-sample.tex` for a complete example.
+## Quick start
+
+1. Copy `scc.cls` into your working directory (or a local `texmf` tree).
+2. Start your document with `\documentclass{scc}`.
+3. See `scc-sample.tex` for a working example.
 
 ## Compiling
 
 ### XeLaTeX (recommended, for exact font matching)
 
 ```bash
-xelatex cris-sample
-bibtex  cris-sample
-xelatex cris-sample
-xelatex cris-sample
+xelatex scc-sample
+bibtex  scc-sample
+xelatex scc-sample
+xelatex scc-sample
 ```
 
 ### pdfLaTeX (fallback, uses substitute fonts)
 
 ```bash
-pdflatex cris-sample
-bibtex   cris-sample
-pdflatex cris-sample
-pdflatex cris-sample
+pdflatex scc-sample
+bibtex   scc-sample
+pdflatex scc-sample
+pdflatex scc-sample
 ```
 
 ## Fonts
 
-The template uses the following fonts (all freely available from Google Fonts):
-
 | Role | Font | Fallback (pdfLaTeX) |
 |------|------|---------------------|
-| Headings | Cormorant Garamond Light | EB Garamond |
+| Headings | Cormorant Garamond | EB Garamond |
 | Body text | IBM Plex Sans Light | Open Sans |
 | Labels / mono | IBM Plex Mono | Inconsolata |
 
-For XeLaTeX, install the fonts system-wide or place them in your project directory.
+All primary fonts are freely available from Google Fonts. For XeLaTeX, install them system-wide or place them in your project directory.
 
-## Class Options
+## Class options
 
 - `letterpaper` (default) / `a4paper` — page size
 - Standard `article` options (`draft`, `final`, etc.) are passed through
 
-## Metadata Commands
+## Metadata commands
 
 | Command | Example | Description |
 |---------|---------|-------------|
-| `\title{...}` | `\title{Momentum Crashes...}` | Paper title |
-| `\author{...}` | `\author{J.~Kim \and H.~Park}` | Author names |
-| `\volume{...}` | `\volume{1}` | CRIS volume number |
-| `\papernumber{...}` | `\papernumber{3}` | Paper number within volume |
-| `\paperyear{...}` | `\paperyear{2025}` | Publication year |
-| `\papermonth{...}` | `\papermonth{November}` | Publication month |
-| `\shorttitle{...}` | `\shorttitle{Momentum Crashes}` | Running header (right) |
+| `\title{...}` | `\title{What momentum research glosses over}` | Essay title |
+| `\author{...}` | `\author{J.~Kim \and H.~Park}` | Author(s) |
+| `\essaynumber{...}` | `\essaynumber{04}` | Sequence number shown on title (optional) |
+| `\paperdate{...}` | `\paperdate{December 2025}` | Date shown on title |
+| `\shorttitle{...}` | `\shorttitle{Gross momentum}` | Running header (right) |
 | `\shortauthors{...}` | `\shortauthors{Kim \& Park}` | Running header (left) |
-| `\keywords{...}` | `\keywords{momentum, factor}` | Displayed after abstract |
-| `\jelcodes{...}` | `\jelcodes{G11, G12}` | JEL classification codes |
-| `\correspondence{...}` | `\correspondence{email}` | Corresponding author info |
+| `\keywords{...}` | `\keywords{momentum, costs}` | Muted keyword line after the summary (optional) |
 
-## Output Naming Convention
+The `abstract` environment is kept by name but is styled as a quiet lede paragraph — not a boxed, headed abstract.
 
-Compiled PDFs for publication should be renamed to: `CRIS-{vol}-{no}.pdf` (e.g., `CRIS-1-3.pdf`).
+## Output filename convention
 
-## File Structure
+PDFs for publication on the site are named `CRIS-{vol}-{no}.pdf` (e.g. `CRIS-1-4.pdf`). This is an internal identifier for the archive; it is not surfaced to readers.
+
+## File structure
 
 ```
 template/
-├── cris.cls            # Document class
-├── cris-sample.tex     # Sample paper
-├── cris-sample.bib     # Sample bibliography
+├── scc.cls             # Document class
+├── scc-sample.tex      # Sample essay
+├── scc-sample.bib      # Sample bibliography
 ├── README.md           # This file
 └── figures/            # Place figures here
 ```
 
-## Citation Style
+## Citation style
 
-The class uses `natbib` with author-year citations (`\citet`, `\citep`) and the `plainnat` bibliography style.
+`natbib` with author-year citations (`\citet`, `\citep`) and the `plainnat` bibliography style.

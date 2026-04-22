@@ -1,14 +1,13 @@
 %%
-%% cris.cls — Document class for
-%% Critical Review of Investment Strategies (CRIS)
-%% Published by Strategy Critique Collective (SCC)
+%% scc.cls — Document class for essays published by
+%% Strategy Critique Collective (SCC)
 %%
-%% Usage: \documentclass{cris}
+%% Usage: \documentclass{scc}
 %% Recommended engine: XeLaTeX (for exact font matching)
 %% pdfLaTeX fallback supported
 %%
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{cris}[2025/01/01 CRIS Journal Class v1.0]
+\ProvidesClass{scc}[2026/04/22 SCC Essay Class v2.0]
 
 %% ---------- Options ----------
 \newif\if@afourpaper\@afourpaperfalse
@@ -25,18 +24,18 @@
 %% ---------- Geometry ----------
 \RequirePackage{geometry}
 \if@afourpaper
-  \geometry{a4paper, top=1in, bottom=1in, left=1.25in, right=1.25in}
+  \geometry{a4paper, top=1in, bottom=1in, left=1.3in, right=1.3in}
 \else
-  \geometry{letterpaper, top=1in, bottom=1in, left=1.25in, right=1.25in}
+  \geometry{letterpaper, top=1in, bottom=1in, left=1.3in, right=1.3in}
 \fi
 
 %% ---------- Colors ----------
 \RequirePackage{xcolor}
-\definecolor{cris-black}{HTML}{0e0e0c}
-\definecolor{cris-body}{HTML}{1a1a18}
-\definecolor{cris-gold}{HTML}{c8a96e}
-\definecolor{cris-gold-muted}{HTML}{7a6540}
-\definecolor{cris-rule}{HTML}{d9ccb0}
+\definecolor{scc-ink}{HTML}{1c1a15}
+\definecolor{scc-muted}{HTML}{6e6859}
+\definecolor{scc-faint}{HTML}{a6a090}
+\definecolor{scc-accent}{HTML}{8a6d3b}
+\definecolor{scc-rule}{HTML}{d8d2c2}
 
 %% ---------- Fonts ----------
 \ifxetex
@@ -58,10 +57,10 @@
     Scale = MatchLowercase,
   ]
   \newfontfamily\headingfont{Cormorant Garamond}[
-    UprightFont    = *-Light,
-    BoldFont       = *-SemiBold,
-    ItalicFont     = *-LightItalic,
-    BoldItalicFont = *-SemiBoldItalic,
+    UprightFont    = *-Regular,
+    BoldFont       = *-Medium,
+    ItalicFont     = *-Italic,
+    BoldItalicFont = *-MediumItalic,
   ]
   \newfontfamily\labelfont{IBM Plex Mono}[
     Scale = MatchLowercase,
@@ -85,10 +84,10 @@
     Scale = MatchLowercase,
   ]
   \newfontfamily\headingfont{Cormorant Garamond}[
-    UprightFont    = *-Light,
-    BoldFont       = *-SemiBold,
-    ItalicFont     = *-LightItalic,
-    BoldItalicFont = *-SemiBoldItalic,
+    UprightFont    = *-Regular,
+    BoldFont       = *-Medium,
+    ItalicFont     = *-Italic,
+    BoldItalicFont = *-MediumItalic,
   ]
   \newfontfamily\labelfont{IBM Plex Mono}[
     Scale = MatchLowercase,
@@ -108,7 +107,7 @@
 %% ---------- Typography ----------
 \RequirePackage{microtype}
 \linespread{1.4}
-\color{cris-body}
+\color{scc-ink}
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{0.6em}
 
@@ -123,47 +122,38 @@
 \RequirePackage{caption}
 \RequirePackage{natbib}
 \RequirePackage{etoolbox}
-\RequirePackage{soul}
 
 %% ---------- Hyperref (load last among content packages) ----------
 \RequirePackage{hyperref}
 \hypersetup{
   colorlinks  = true,
-  linkcolor   = cris-gold-muted,
-  citecolor   = cris-gold-muted,
-  urlcolor    = cris-gold,
+  linkcolor   = scc-accent,
+  citecolor   = scc-accent,
+  urlcolor    = scc-accent,
   pdfborder   = {0 0 0},
 }
 
 %% ---------- Metadata commands ----------
-\newcommand{\@volume}{}
-\newcommand{\@papernumber}{}
-\newcommand{\@paperyear}{}
-\newcommand{\@papermonth}{}
+\newcommand{\@essaynumber}{}
+\newcommand{\@paperdate}{}
 \newcommand{\@shorttitle}{}
 \newcommand{\@shortauthors}{}
 \newcommand{\@keywords}{}
-\newcommand{\@jelcodes}{}
-\newcommand{\@correspondence}{}
 
-\newcommand{\volume}[1]{\renewcommand{\@volume}{#1}}
-\newcommand{\papernumber}[1]{\renewcommand{\@papernumber}{#1}}
-\newcommand{\paperyear}[1]{\renewcommand{\@paperyear}{#1}}
-\newcommand{\papermonth}[1]{\renewcommand{\@papermonth}{#1}}
+\newcommand{\essaynumber}[1]{\renewcommand{\@essaynumber}{#1}}
+\newcommand{\paperdate}[1]{\renewcommand{\@paperdate}{#1}}
 \newcommand{\shorttitle}[1]{\renewcommand{\@shorttitle}{#1}}
 \newcommand{\shortauthors}[1]{\renewcommand{\@shortauthors}{#1}}
 \newcommand{\keywords}[1]{\renewcommand{\@keywords}{#1}}
-\newcommand{\jelcodes}[1]{\renewcommand{\@jelcodes}{#1}}
-\newcommand{\correspondence}[1]{\renewcommand{\@correspondence}{#1}}
 
-%% ---------- Label helper ----------
-\newcommand{\cris@label}[1]{%
-  {\labelfont\fontsize{8}{10}\selectfont\color{cris-gold}%
+%% ---------- Label helpers ----------
+\newcommand{\scc@label}[1]{%
+  {\labelfont\fontsize{8.5}{11}\selectfont\color{scc-ink}%
    \MakeUppercase{#1}}%
 }
 
-\newcommand{\cris@labelmuted}[1]{%
-  {\labelfont\fontsize{8}{10}\selectfont\color{cris-gold-muted}%
+\newcommand{\scc@labelmuted}[1]{%
+  {\labelfont\fontsize{8.5}{11}\selectfont\color{scc-muted}%
    \MakeUppercase{#1}}%
 }
 
@@ -173,114 +163,96 @@
 \renewcommand{\headrulewidth}{0pt}
 \renewcommand{\footrulewidth}{0pt}
 
-\fancyhead[L]{\cris@labelmuted{\@shortauthors}}
-\fancyhead[R]{\cris@labelmuted{\@shorttitle}}
-\fancyfoot[C]{{\labelfont\fontsize{9}{11}\selectfont\color{cris-gold-muted}\thepage}}
+\fancyhead[L]{{\labelfont\fontsize{8.5}{11}\selectfont\color{scc-faint}\@shortauthors}}
+\fancyhead[R]{{\labelfont\fontsize{8.5}{11}\selectfont\color{scc-faint}\@shorttitle}}
+\fancyfoot[C]{{\labelfont\fontsize{9}{11}\selectfont\color{scc-muted}\thepage}}
 
 \fancypagestyle{firstpage}{%
   \fancyhf{}%
   \renewcommand{\headrulewidth}{0pt}%
-  \fancyfoot[C]{{\labelfont\fontsize{9}{11}\selectfont\color{cris-gold-muted}\thepage}}%
+  \fancyfoot[C]{{\labelfont\fontsize{9}{11}\selectfont\color{scc-muted}\thepage}}%
 }
 
 %% ---------- Title page ----------
 \renewcommand{\maketitle}{%
   \thispagestyle{firstpage}%
   \begingroup
-    %% Top gold rule
-    {\color{cris-gold}\hrule height 0.5pt}%
-    \vskip 8pt
-    %% Journal identity bar
+    %% Small identity label — no journal banner, no gold rule
     \noindent
-    \cris@label{SCC}\hfill
-    \cris@labelmuted{Critical Review of Investment Strategies}%
-    \par\vskip 4pt
-    \noindent
-    \cris@labelmuted{Vol.~\@volume\enspace·\enspace No.~\@papernumber\enspace·\enspace\@papermonth~\@paperyear}%
-    \par\vskip 8pt
-    {\color{cris-rule}\hrule height 0.4pt}%
-    \vskip 36pt
+    \scc@label{SCC}%
+    \ifdefempty{\@essaynumber}{}{%
+      \enspace\scc@labelmuted{·}\enspace
+      \scc@labelmuted{Essay \@essaynumber}%
+    }%
+    \par\vskip 32pt
     %% Title
-    {\headingfont\fontsize{26}{31}\selectfont\color{cris-black}\@title\par}%
-    \vskip 18pt
+    {\headingfont\fontsize{24}{29}\selectfont\color{scc-ink}\@title\par}%
+    \vskip 14pt
     %% Authors
-    {\fontsize{12}{16}\selectfont\color{cris-body}\@author\par}%
-    \vskip 6pt
+    {\fontsize{11}{15}\selectfont\color{scc-ink}\@author\par}%
     %% Date
-    {\labelfont\fontsize{9}{12}\selectfont\color{cris-gold-muted}%
-     \@papermonth~\@paperyear\par}%
-    \vskip 30pt
+    \ifdefempty{\@paperdate}{}{%
+      \vskip 4pt
+      {\labelfont\fontsize{9}{12}\selectfont\color{scc-muted}%
+       \@paperdate\par}%
+    }%
+    \vskip 22pt
+    %% Thin rule
+    {\color{scc-rule}\hrule height 0.4pt}%
+    \vskip 22pt
   \endgroup
 }
 
-%% ---------- Abstract ----------
+%% ---------- Abstract / summary ----------
+%% We keep the standard `abstract` name but restyle it as a quiet
+%% lede paragraph — no box, no "ABSTRACT" heading, no laundry list of
+%% metadata. Keywords, if provided, appear as a small muted line.
 \renewenvironment{abstract}{%
-  \cris@sectionrule{Abstract}%
-  \vskip 6pt
-  \begingroup\fontsize{10.5}{15}\selectfont\color{cris-body}%
+  \begingroup
+  \fontsize{10.5}{16}\selectfont\color{scc-ink}%
+  \noindent\ignorespaces
 }{%
   \par
-  %% Keywords
   \ifdefempty{\@keywords}{}{%
-    \vskip 12pt
-    {\cris@labelmuted{Keywords}\enspace\enspace
-     \fontsize{10}{14}\selectfont\color{cris-body}\@keywords\par}%
-  }%
-  %% JEL codes
-  \ifdefempty{\@jelcodes}{}{%
-    \vskip 4pt
-    {\cris@labelmuted{JEL}\enspace\enspace
-     \fontsize{10}{14}\selectfont\color{cris-body}\@jelcodes\par}%
-  }%
-  %% Correspondence
-  \ifdefempty{\@correspondence}{}{%
-    \vskip 4pt
-    {\cris@labelmuted{Correspondence}\enspace\enspace
-     \fontsize{10}{14}\selectfont\color{cris-body}\@correspondence\par}%
+    \vskip 10pt
+    {\scc@labelmuted{Keywords}\enspace\enspace
+     \fontsize{9.5}{13}\selectfont\color{scc-muted}\@keywords\par}%
   }%
   \endgroup
-  \vskip 24pt
-  {\color{cris-rule}\hrule height 0.4pt}%
-  \vskip 24pt
-}
-
-%% ---------- Section rule helper ----------
-\newcommand{\cris@sectionrule}[1]{%
-  \noindent
-  \cris@label{#1}%
-  \enspace
-  {\color{cris-rule}\leaders\hrule height 0.4pt\hfill\kern0pt}%
-  \par\vskip 2pt
+  \vskip 22pt
+  {\color{scc-rule}\hrule height 0.4pt}%
+  \vskip 22pt
 }
 
 %% ---------- Section formatting ----------
+%% No gold labels, no horizontal rules — just clean serif headings.
 \titleformat{\section}
-  {\normalfont}
-  {}
+  {\headingfont\fontsize{15}{19}\selectfont\color{scc-ink}}
+  {\thesection\enspace}
   {0pt}
-  {\cris@sectionrule}
-\titlespacing*{\section}{0pt}{28pt}{8pt}
+  {}
+\titlespacing*{\section}{0pt}{22pt}{6pt}
 
 \titleformat{\subsection}
-  {\headingfont\fontsize{16}{20}\selectfont\color{cris-black}}
+  {\headingfont\fontsize{12.5}{16}\selectfont\itshape\color{scc-ink}}
   {\thesubsection\enspace}
   {0pt}
   {}
-\titlespacing*{\subsection}{0pt}{20pt}{6pt}
+\titlespacing*{\subsection}{0pt}{16pt}{4pt}
 
 \titleformat{\subsubsection}
-  {\normalfont\itshape\fontsize{11}{15}\selectfont\color{cris-body}}
+  {\normalfont\fontsize{10.5}{14}\selectfont\itshape\color{scc-ink}}
   {\thesubsubsection\enspace}
   {0pt}
   {}
-\titlespacing*{\subsubsection}{0pt}{14pt}{4pt}
+\titlespacing*{\subsubsection}{0pt}{12pt}{3pt}
 
 %% ---------- Captions ----------
 \captionsetup{
   font       = {small},
   labelfont  = {bf},
   labelsep   = period,
-  textfont   = {color=cris-body},
+  textfont   = {color=scc-ink},
   skip       = 8pt,
 }
 
@@ -299,7 +271,7 @@
 %% ---------- Footnotes ----------
 \renewcommand{\footnoterule}{%
   \kern -3pt
-  {\color{cris-rule}\hrule width 2in height 0.4pt}
+  {\color{scc-rule}\hrule width 2in height 0.4pt}
   \kern 2.6pt
 }
 
